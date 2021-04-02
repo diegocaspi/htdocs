@@ -1,3 +1,3 @@
 <?php
-    echo md5('ciao');
+    echo base64_encode(openssl_random_pseudo_bytes(6));
 ?>
