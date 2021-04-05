@@ -1,4 +1,9 @@
 <?php
+//ini_set('display_errors', 1);
+
+use Config\PHPMailer\MyCustomMailer;
+require(ROOT . 'Config/PHPMailer/MyCustomMailer.php');
+
 class employeesController extends Controller
 {
     function index()
@@ -39,17 +44,24 @@ class employeesController extends Controller
 
                 if ($gen != false) {
                     // send email
-                    $message = "Welcome to our Company\r\nYour password is: " . $gen;
-                    $headers = 'From: webmaster@example.com'       . "\r\n" .
-                        'Reply-To: webmaster@example.com' . "\r\n" .
-                        'X-Mailer: PHP/' . phpversion();
+                    try {
+                        $mailer = new MyCustomMailer();
+                        $to_name = $_POST['surname'] . ' ' . $_POST['name'];
+                        $send = $mailer->sendSecurityCodeEmail($_POST["email"], $to_name, $gen);
 
-                    if (mail($_POST["email"], 'Credentials', $message, $headers)) {
-                        header("Location: " . WEBROOT . "employees/index");
+                        if ($send) {
+                            // if message has been sent correctly navigate to employees index page
+                            header("Location: " . WEBROOT . "employees/index");
+                        } else {
+                            // if an error occured during email sending show an error banner
+                            echo '<script>alert("Unable to send email")</script>';
+                        }
+                    } catch (Exception $e) {
+                        echo '<script>alert("' . $e . '")</script>';
                     }
                 } else {
                     // if an error occured show an alert
-                    echo '<script>alert("User already exist or an error occured!")</script>' ;
+                    echo '<script>alert("User already exist or an error occured!")</script>';
                 }
             }
         }
