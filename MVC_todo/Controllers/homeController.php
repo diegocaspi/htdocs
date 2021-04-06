@@ -12,12 +12,15 @@ class homeController extends Controller
         $d['username'] = $_SESSION['user'];
         require(ROOT . 'Models/Employee.php');
         require(ROOT . 'Models/Task.php');
+        require(ROOT . 'Models/Subtask.php');
 
         // load necessary data
         $employee = new Employee();
         $task = new Task();
+        $subtask = new Subtask();
 
         $d['employees_count'] = $employee->count()[0];
+        $d['subtasks_count'] = $subtask->count()[0];
         $d['tasks_count'] = $task->count()[0];
 
         $this->set($d);

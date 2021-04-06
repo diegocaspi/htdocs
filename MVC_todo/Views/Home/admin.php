@@ -22,6 +22,15 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-sm">
+                <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Number of subtasks</div>
+                    <div class="card-body">
+                        <h3 class="card-title"><?php echo $subtasks_count ?></h3>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </center>

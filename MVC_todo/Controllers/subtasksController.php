@@ -1,41 +1,41 @@
 <?php
-class tasksController extends Controller
+
+class subtasksController extends Controller
 {
     function index()
     {
+        // check authorization
         session_start();
         if ($_SESSION['valid'] != true or $_SESSION['type'] != 'admin_session') {
             header("Location: " . WEBROOT . "login/admin");
         }
 
-        require(ROOT . 'Models/Task.php');
+        require(ROOT . 'Models/Subtask.php');
 
-        $tasks = new Task();
+        $subtask = new Subtask();
 
-        $d['tasks'] = $tasks->showAllTasks();
+        $d['subtasks'] = $subtask->showAllSubtasks();
         $this->set($d);
         $this->render("index");
     }
 
     function create()
     {
+        // check authorization
         session_start();
         if ($_SESSION['valid'] != true or $_SESSION['type'] != 'admin_session') {
             header("Location: " . WEBROOT . "login/admin");
         }
 
-        if (isset($_POST["title"]))
-        {
-            require(ROOT . 'Models/Task.php');
+        if (isset($_POST['title'])) {
+            require(ROOT . 'Models/Subtask.php');
 
-            $task= new Task();
+            $subtask = new Subtask();
 
-            if ($task->create($_POST["title"], $_POST["description"], $_POST['employee_id']))
-            {
-                header("Location: " . WEBROOT . "tasks/index");
+            if ($subtask->create($_POST['title'], $_POST['description'], $_POST['task_id'])) {
+                header("Location: " . WEBROOT . "subtasks/index");
             }
         }
-
         $this->render("create");
     }
 
@@ -46,11 +46,11 @@ class tasksController extends Controller
             header("Location: " . WEBROOT . "login/admin");
         }
 
-        require(ROOT . 'Models/Employee.php');
+        require(ROOT . 'Models/Task.php');
 
-        $employee = new Employee();
+        $task = new Task();
 
-        $d["employees"] = $employee->filterBySurname($q);
+        $d["tasks"] = $task->filterByTitle($q);
         $this->layout = 'json';
         $this->set($d);
         $this->render('livesearch');
@@ -58,21 +58,21 @@ class tasksController extends Controller
 
     function edit($id)
     {
+        // check authorization
         session_start();
         if ($_SESSION['valid'] != true or $_SESSION['type'] != 'admin_session') {
             header("Location: " . WEBROOT . "login/admin");
         }
 
-        require(ROOT . 'Models/Task.php');
-        $task = new Task();
+        require(ROOT . 'Models/Subtask.php');
 
-        $d["task"] = $task->showTask($id);
+        $subtask = new Subtask();
 
-        if (isset($_POST["title"]))
-        {
-            if ($task->edit($id, $_POST["title"], $_POST["description"], $_POST["employee_id"]))
-            {
-                header("Location: " . WEBROOT . "tasks/index");
+        $d['subtask'] = $subtask->showSubtask($id);
+
+        if (isset($_POST['title'])) {
+            if ($subtask->edit($id, $_POST['title'], $_POST['description'], $_POST['task_id'])) {
+                header("Location: " . WEBROOT . "subtasks/index");
             }
         }
         $this->set($d);
@@ -81,17 +81,17 @@ class tasksController extends Controller
 
     function delete($id)
     {
+        // check authorization
         session_start();
         if ($_SESSION['valid'] != true or $_SESSION['type'] != 'admin_session') {
             header("Location: " . WEBROOT . "login/admin");
         }
-        
-        require(ROOT . 'Models/Task.php');
 
-        $task = new Task();
-        if ($task->delete($id))
-        {
-            header("Location: " . WEBROOT . "tasks/index");
+        require(ROOT . 'Models/Subtask.php');
+
+        $subtask = new Subtask();
+        if ($subtask->delete($id)) {
+            header("Location: " . WEBROOT . "subtasks/index");
         }
     }
 }

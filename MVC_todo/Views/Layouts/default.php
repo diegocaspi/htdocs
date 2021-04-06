@@ -34,6 +34,12 @@
 
         <ul class="navbar-nav">
             <li class="nav-item">
+                <a class="nav-link" href="/MVC_todo/subtasks/index">Subtasks <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav">
+            <li class="nav-item">
                 <a class="nav-link" href="/MVC_todo/employees/index">Employees <span class="sr-only">(current)</span></a>
             </li>
         </ul>

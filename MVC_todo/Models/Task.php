@@ -54,6 +54,18 @@ class Task extends Model
         return $req->fetchAll();
     }
 
+    public function filterByTitle($title)
+    {
+        $sql = "SELECT * FROM tasks WHERE title LIKE :title";
+
+        $req = Database::getBdd()->prepare($sql);
+        $req->execute([
+            'title' => ('%' . $title . '%')
+        ]);
+
+        return $req->fetchAll();
+    }
+
     public function getAllEmployeeTasks($id)
     {
         $sql = "SELECT * FROM tasks WHERE employee_id = :id";
